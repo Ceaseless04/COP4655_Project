@@ -1,2 +1,2 @@
-# COP4655_Project
+# Simple Chef
 Group 6 Project for COP4655
