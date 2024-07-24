@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var ingredients: [Ingredient] = sampleData
     let layout = [
         GridItem(.adaptive(minimum:100))
     ]
@@ -22,14 +23,20 @@ struct ContentView: View {
 
                 
                 LazyVGrid(columns: layout) {
-                    ForEach(sampleData) { datum in
-                        IngredientButton(ingredient: datum)
+                    ForEach($ingredients) { ingredient in
+                        IngredientButton(ingredient: ingredient)
                     }.padding(.top)
                 }
                 
-                
             }// end ScrollView
             .padding()
+            
+            List(ingredients) {
+                ingredient in
+                if ingredient.selected {
+                    Text(ingredient.name)
+                }
+            }
         }//end VStack
     }//end Body
 }//end contentView
@@ -41,6 +48,7 @@ struct Ingredient: Identifiable, Hashable {
     let imageName: String // Name of the image in the asset catalog
     let name: String // Name of the ingredient
     let description: String // Short description of the ingredient
+    var selected: Bool = false
 }
 
 //--------------------------------------------------
@@ -67,19 +75,18 @@ let sampleData = [
 //--------------------------------------------------
 // Custom list view cell
 struct IngredientButton: View {
-    let ingredient: Ingredient // Data for a single person
-    @State var selected = false
+    @Binding var ingredient: Ingredient // Data for a single ingredient
     var body: some View {
 
         VStack {
-            Button(action: {selected.toggle()})
+            Button(action: {ingredient.selected.toggle()})
             {
                 Image(ingredient.imageName) // Load the image from assets
                     .resizable()
                     .padding(.all, 5.0)
                     .frame(width: 95, height: 95) // Set image size
                     .overlay( Circle()
-                        .stroke(selected ? Color.blue : Color.black, lineWidth: 5)
+                        .stroke(ingredient.selected ? Color.blue : Color.black, lineWidth: 5)
                         .frame(width: 110, height: 110)
                     )
 
