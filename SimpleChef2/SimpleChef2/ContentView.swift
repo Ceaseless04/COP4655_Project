@@ -24,7 +24,7 @@ struct ContentView: View {
                 LazyVGrid(columns: layout) {
                     ForEach(sampleData) { datum in
                         IngredientButton(ingredient: datum)
-                    }
+                    }.padding(.top)
                 }
                 
                 
@@ -57,24 +57,34 @@ let sampleData = [
            name: "Milk",
            description: "Classic cow milk, any fat percent or vegan substitute can work."),
     Ingredient(imageName: "Tomato",
-           name: "Tomato",
-           description: "Juice and savory, perfect for sauces or added moisture.")
+           name: "Tomato",
+           description: "Juice and savory, perfect for sauces or added moisture."),
+    Ingredient(imageName: "PeanutButter",
+           name: "Peanut Butter",
+           description: "Yum")
 ]
 
 //--------------------------------------------------
 // Custom list view cell
 struct IngredientButton: View {
     let ingredient: Ingredient // Data for a single person
-
+    @State var selected = false
     var body: some View {
+
         VStack {
-            Image(ingredient.imageName) // Load the image from assets
-                .resizable()
-                .frame(width: 100, height: 100) // Set image size
-                .clipShape(Circle()) // Make the image circular
-                .padding(.trailing, 10)
-                .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: /*@START_MENU_TOKEN@*/3/*@END_MENU_TOKEN@*/) // Add padding to the right of the image
-                Text(ingredient.name) // Display the person's name
+            Button(action: {selected.toggle()})
+            {
+                Image(ingredient.imageName) // Load the image from assets
+                    .resizable()
+                    .padding(.all, 5.0)
+                    .frame(width: 95, height: 95) // Set image size
+                    .overlay( Circle()
+                        .stroke(selected ? Color.blue : Color.black, lineWidth: 5)
+                        .frame(width: 110, height: 110)
+                    )
+
+            }
+                Text(ingredient.name) // Display the ingredient's name
                     .font(.headline)
                     .lineLimit(1) // Limit the description to one line
         }// HVtack
