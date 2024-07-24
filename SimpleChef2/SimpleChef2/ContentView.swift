@@ -13,31 +13,68 @@ struct ContentView: View {
         GridItem(.adaptive(minimum:100))
     ]
     var body: some View {
-        VStack {
-            Text("Select your ingredients!")
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .padding(.top, 10.0)
-                .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
-            ScrollView {
+        ZStack {
 
+            VStack {
+
+                ScrollView {
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    
+                    LazyVGrid(columns: layout) {
+                        
+                        ForEach($ingredients) { ingredient in
+                            IngredientButton(ingredient: ingredient)
+                        }.padding(.top)
+                    }
+                    
+                }// end ScrollView
+                .padding(.horizontal)
                 
-                LazyVGrid(columns: layout) {
-                    ForEach($ingredients) { ingredient in
-                        IngredientButton(ingredient: ingredient)
-                    }.padding(.top)
-                }
-                
-            }// end ScrollView
-            .padding()
+//                List(ingredients) {
+//                    ingredient in
+//                    if ingredient.selected {
+//                        Text(ingredient.name)
+//                    }
+//                }
+            }//end VStack
             
-            List(ingredients) {
-                ingredient in
-                if ingredient.selected {
-                    Text(ingredient.name)
-                }
+            VStack {
+                Text("Select your ingredients!")
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 10.0)
+                    .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
+                    .shadow(color: .gray, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                
+                Spacer()
             }
-        }//end VStack
+            VStack {
+                Spacer()
+                Button(action: {
+                    // Action when button is tapped
+                    print("Button tapped!")
+                }) {
+                    Text("Get Cooking!")
+                        .font(.headline)
+                        .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxLarge/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width:300, height:50)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.black, lineWidth: 1)
+                        )
+                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, y:10)
+                }//end Button
+                
+            }//end inner floating button vstack
+        }//end ZStack
     }//end Body
 }//end contentView
 
